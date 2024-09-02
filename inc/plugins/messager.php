@@ -70,7 +70,7 @@ function messager_install()
 	$setting_group = array(
 		'name' => 'messager',
 		'title' => 'Einstellungen für Messagersystem',
-		'description' => 'This is my plugin and it does some things',
+		'description' => 'Hier kannst du alle Einstellungen zum Messagersystem einfügen.',
 		'disporder' => 5,
 		// The order your setting group will display
 		'isdefault' => 0
