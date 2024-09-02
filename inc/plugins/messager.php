@@ -45,7 +45,7 @@ function messager_info()
 	return array(
 		"name" => "Messagersystem",
 		"description" => "Hier kannst du deinen Usern ermöglichen, das sie Kurznachrichten schreiben können.",
-		"website" => "",
+		"website" => "https://github.com/Ales12/messagersystem",
 		"author" => "Ales",
 		"authorsite" => "",
 		"version" => "1.0",
