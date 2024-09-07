@@ -45,7 +45,7 @@ function messager_info()
 	return array(
 		"name" => "Messagersystem",
 		"description" => "Hier kannst du deinen Usern ermöglichen, das sie Kurznachrichten schreiben können.",
-		"website" => "https://github.com/Ales12/messagersystem",
+		"website" => "",
 		"author" => "Ales",
 		"authorsite" => "",
 		"version" => "1.0",
@@ -69,8 +69,8 @@ function messager_install()
 
 	$setting_group = array(
 		'name' => 'messager',
-		'title' => 'Einstellungen für Messagersystem',
-		'description' => 'Hier kannst du alle Einstellungen zum Messagersystem einfügen.',
+		'title' => 'Einstellungen für messager',
+		'description' => 'This is my plugin and it does some things',
 		'disporder' => 5,
 		// The order your setting group will display
 		'isdefault' => 0
@@ -1220,7 +1220,7 @@ function messager_replychat_do()
 	$message_time = $_POST['message_time'];
 	$message_date = $_POST['message_date'];
 
-	// Einmal Charaktere informieren �ber neue SMS
+	// Einmal Charaktere informieren über neue SMS
 	$usernames = explode(',', $messager_partner);
 	$usernames = array_map("trim", $usernames);
 	$charas = array();
@@ -1628,7 +1628,7 @@ function messager_globalchats()
 	$lang->load('messager');
 
 	$messager_forum = $mybb->settings['messager_forum'];
-	$character = $mybb->user['username'];
+	$character = $db->escape_string($mybb->user['username']);
 
 
 
