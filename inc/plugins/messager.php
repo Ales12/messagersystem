@@ -1083,16 +1083,16 @@ function messager_newchat()
 	$forum['parentlist'] = "," . $forum['parentlist'] . ",";
 	if (preg_match("/,$messager_forum,/i", $forum['parentlist'])) {
 		if ($mybb->input['previewpost'] || $post_errors) {
-			$messager_partner = htmlspecialchars($mybb->get_input('messager_partner'));
+			$messager_partner = $db->escape_string($mybb->get_input('messager_partner'));
 			$messager_kind = (int) $mybb->input['messager_kind'];
-			$mesager_groupchattitle = htmlspecialchars($mybb->get_input('messager_groupchattitle'));
+			$mesager_groupchattitle = $db->escape_string($mybb->get_input('messager_groupchattitle'));
 			$messager_grouppic = $mybb->input['messager_grouppic'];
 			$message_date = $mybb->input['message_date'];
 			$message_time = $mybb->input['message_time'];
 
 		} else {
-			$messager_partner = htmlspecialchars($thread['messager_partner']);
-			$messager_groupchattitle = htmlspecialchars($thread['messager_groupchattitle']);
+			$messager_partner = $db->escape_string($thread['messager_partner']);
+			$messager_groupchattitle = $db->escape_string($thread['messager_groupchattitle']);
 			$message_time = $thread['messager_grouppic'];
 			$message_date = $thread['message_date'];
 			$message_time = $thread['message_time'];
@@ -1301,7 +1301,7 @@ function messager_editscene()
 
 			if ($mybb->input['previewpost'] || $post_errors) {
 
-				$messager_partner = htmlspecialchars($mybb->get_input('messager_partner'));
+				$messager_partner = $db->escape_string($mybb->get_input('messager_partner'));
 				foreach ($kind as $key => $value) {
 					$checked = "";
 					if ($key == $mybb->get_input('messager_kind')) {
@@ -1309,12 +1309,12 @@ function messager_editscene()
 					}
 					$select_kind .= "<option value='{$key}' {$checked}>{$value}</option>";
 				}
-				$message_groupchattitle = htmlspecialchars($mybb->get_input('messager_groupchattitle'));
+				$message_groupchattitle = $db->escape_string($mybb->get_input('messager_groupchattitle'));
 				$messager_grouppic = $mybb->get_input('messager_grouppic');
 				$message_date = $mybb->get_input('message_date');
 				$message_time = $mybb->get_input('message_time');
 			} else {
-				$messager_partner = htmlspecialchars($thread['messager_partner']);
+				$messager_partner = $db->escape_string($thread['messager_partner']);
 
 				foreach ($kind as $key => $value) {
 					$checked = "";
@@ -1325,8 +1325,8 @@ function messager_editscene()
 				}
 				$message_groupchattitle = $thread['messager_groupchattitle'];
 				$messager_grouppic = $thread['messager_grouppic'];
-				$message_date = htmlspecialchars($pc['message_date']);
-				$message_time = htmlspecialchars($pc['message_time']);
+				$message_date = $db->escape_string($pc['message_date']);
+				$message_time = $db->escape_string($pc['message_time']);
 			}
 
 
@@ -1334,11 +1334,11 @@ function messager_editscene()
 		} else {
 			// Wenn es sich nur um einen Post handelt
 			if ($mybb->input['previewpost'] || $post_errors) {
-				$message_date = htmlspecialchars($mybb->get_input('message_date'));
-				$message_time = htmlspecialchars($mybb->get_input('message_time'));
+				$message_date = $db->escape_string($mybb->get_input('message_date'));
+				$message_time = $db->escape_string($mybb->get_input('message_time'));
 			} else {
-				$message_date = htmlspecialchars($pc['message_date']);
-				$message_time = htmlspecialchars($pc['message_time']);
+				$message_date = $db->escape_string($pc['message_date']);
+				$message_time = $db->escape_string($pc['message_time']);
 			}
 
 
