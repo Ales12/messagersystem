@@ -781,8 +781,13 @@ function messager_install()
 	
 }
 
+.message_own .message_account_pic{
+	width: 120px;
+	height: 120px;
+	margin: 20px 10px 20px 30px;
+}
 
-.message_account_pic{
+.message_other .message_account_pic{
 	width: 120px;
 	height: 120px;
 	margin: 20px 10px;
