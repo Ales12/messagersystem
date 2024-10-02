@@ -781,13 +781,8 @@ function messager_install()
 	
 }
 
-.message_own .message_account_pic{
-	width: 120px;
-	height: 120px;
-	margin: 20px 10px 20px 30px;
-}
 
-.message_other .message_account_pic{
+.message_account_pic{
 	width: 120px;
 	height: 120px;
 	margin: 20px 10px;
@@ -1590,7 +1585,12 @@ function messager_postbit(&$post)
 			$post['profillink'] = "<div class='message_profile'>{$post['profilelink']}</div>";
 		} else {
 			$post['profillink'] = "";
-			$post['account_pic'] = "";
+				if (!empty($post[$picfid])) {
+				$fid = $post[$picfid];
+			} else {
+				$fid = "images/messager/nopic.png";
+			}
+			$post['account_pic'] = "<div class='message_account_pic'><img src='{$fid}'></div>";
 		}
 		eval ("\$post['messager_messagedate'] = \"" . $templates->get("messager_messagedate") . "\";");
 		$post['messager_css'] = "";
