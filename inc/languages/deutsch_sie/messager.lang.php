@@ -14,4 +14,6 @@ $l['messager_misc'] = "Messager";
 // Alerts
 $l['messager_newmessagerchat'] = "{1} hat einen neuen WhatsApp-Chat gestartet.";
 $l['messager_newmessage'] = "{1} hat dir eine neue WhatsApp-Nachricht in <b>{2}</b> geschrieben.";
+$l['myalerts_setting_messager_newmessagerchat'] = "Möchtest du eine Benachrichtung, wenn ein neuer Chat eröffnet wurde?";
+$l['myalerts_setting_messager_newmessage'] = "Möchtest du eine Benachrichtung, wenn auf deinen Chat geantwortet wurde?";
 ?>
