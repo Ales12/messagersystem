@@ -10,14 +10,23 @@ messager_
 Dieses muss bei dem Forum angegeben werden, in welchem der Messager laufen soll.
 
 ## neue DB-Spalten im threads
-messager_partner, messager_groupchattitle, messager_grouppic, messager_kind, message_date, message_time
+**präfix_threads**
+- messager_partner
+- messager_groupchattitle
+- messager_grouppic
+- messager_kind
+
+**präfix_posts**
+- message_date
+- message_time
 
 ## neue Templates
 - messager_editmessage 	
 - messager_editmessage_firstpost 	
 - messager_forumdisplay_icon 	
-- messager_forumdisplay_thread 	
-- messager_forumdisplay_threadlist 	
+- messager_forumdisplay_thread
+- messager_forumdisplay_thread_modbit
+- messager_forumdisplay_threadlist
 - messager_globalchats 	
 - messager_messagedate 	
 - messager_misc 	
