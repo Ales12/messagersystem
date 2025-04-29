@@ -244,6 +244,15 @@ function messager_install()
 	$db->insert_query("templates", $insert_array);
 
 	$insert_array = array(
+		'title' => 'messager_forumdisplay_thread_modbit',
+		'template' => $db->escape_string('<td class="{$bgcolor}{$thread_type_class}" align="center" style="white-space: nowrap"><input type="checkbox" class="checkbox" name="inlinemod_{$multitid}" id="inlinemod_{$multitid}" value="1" {$inlinecheck}  /></td>'),
+		'sid' => '-1',
+		'version' => '',
+		'dateline' => TIME_NOW
+	);
+	$db->insert_query("templates", $insert_array);
+
+	$insert_array = array(
 		'title' => 'messager_forumdisplay_threadlist',
 		'template' => $db->escape_string('<div class="float_left">
 		{$multipage}
@@ -1036,11 +1045,7 @@ function messager_activate()
 
 	// neue variabeln in die templates einfügen
 	require MYBB_ROOT . "/inc/adminfunctions_templates.php";
-	find_replace_templatesets("editpost", "#" . preg_quote('{$posticons}') . "#i", '{$messager_editmessage}{$posticons}');
-	find_replace_templatesets("newreply", "#" . preg_quote('{$posticons}') . "#i", '{$messager_replaychat}{$posticons}');
-	find_replace_templatesets("newreply_threadreview_post", "#" . preg_quote('{$reviewmessage}') . "#i", '{$messager_threadreview}{$reviewmessage}');
-	find_replace_templatesets("newthread", "#" . preg_quote('{$posticons}') . "#i", '{$messager_newchat_facts}{$posticons}');
-	find_replace_templatesets("header_welcomeblock_member", "#" . preg_quote('{$usercplink}') . "#i", '{$messager_chats}{$usercplink}');
+
 }
 
 function messager_deactivate()
@@ -1061,11 +1066,7 @@ function messager_deactivate()
 
 	// variabeln rausnehmen
 	require MYBB_ROOT . "/inc/adminfunctions_templates.php";
-	find_replace_templatesets("editpost", "#" . preg_quote('{$messager_editmessage}') . "#i", '', 0);
-	find_replace_templatesets("newreply", "#" . preg_quote('{$messager_replaychat}') . "#i", '', 0);
-	find_replace_templatesets("newreply_threadreview_post", "#" . preg_quote('{$messager_threadreview}') . "#i", '', 0);
-	find_replace_templatesets("newthread", "#" . preg_quote('{$messager_newchat_facts}') . "#i", '', 0);
-	find_replace_templatesets("header_welcomeblock_member", "#" . preg_quote('{$messager_chats}') . "#i", '', 0);
+
 
 }
 
@@ -1082,7 +1083,7 @@ function messager_newchat()
 
 	$thread['messager_partner'] = $mybb->user['username'] . $mybb->get_input('messager_partner');
 	$forum['parentlist'] = "," . $forum['parentlist'] . ",";
-	$thread['message_date'] = "2022-01-01";
+	$thread['message_date'] = "2024-01-01";
 	if (preg_match("/,$messager_forum,/i", $forum['parentlist'])) {
 		if ($mybb->input['previewpost'] || $post_errors) {
 			$messager_partner = htmlspecialchars($mybb->get_input('messager_partner'));
@@ -1196,7 +1197,7 @@ function messager_replychat()
 	//Die Sprachdatei
 	$lang->load('messager');
 	$messager_forum = $mybb->settings['messager_forum'];
-
+	$thread['message_date'] = "2024-01-01";
 
 	$forum['parentlist'] = "," . $forum['parentlist'] . ",";
 	if (preg_match("/,$messager_forum,/i", $forum['parentlist'])) {
@@ -1585,7 +1586,7 @@ function messager_postbit(&$post)
 			$post['profillink'] = "<div class='message_profile'>{$post['profilelink']}</div>";
 		} else {
 			$post['profillink'] = "";
-				if (!empty($post[$picfid])) {
+			if (!empty($post[$picfid])) {
 				$fid = $post[$picfid];
 			} else {
 				$fid = "images/messager/nopic.png";
@@ -1611,7 +1612,7 @@ function messager_postbit(&$post)
 			if ($post['username'] == $mybb->user['username']) {
 				$post['messager_css'] = "message_own";
 				$post['profilelink'] = "<a href='member.php?action=profile&uid={$post['uid']}'>{$post['username']}</a>";
-				$post['profillink'] = "<div class='message_profile'>{$post['profilelink']}</div>";
+				$post['profillink'] = "<div class='message_profile'></div>";
 			} else {
 				$post['messager_css'] = "message_other";
 				$user = explode(" ", $post['username']);
