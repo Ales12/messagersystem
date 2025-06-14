@@ -60,12 +60,12 @@ function messager_install()
 	global $db, $mybb;
 
 	// Datenbank
-	$db->query("ALTER TABLE `" . TABLE_PREFIX . "threads` ADD `messager_partner` varchar(400) CHARACTER SET utf8 NOT NULL;");
-	$db->query("ALTER TABLE `" . TABLE_PREFIX . "threads` ADD `messager_groupchattitle` varchar(400) CHARACTER SET utf8 NOT NULL;");
-	$db->query("ALTER TABLE `" . TABLE_PREFIX . "threads` ADD `messager_grouppic` varchar(400) CHARACTER SET utf8 NOT NULL;");
-	$db->query("ALTER TABLE `" . TABLE_PREFIX . "threads` ADD `messager_kind` int(100)  NOT NULL;");
-	$db->query("ALTER TABLE `" . TABLE_PREFIX . "posts` ADD `message_date` varchar(400) CHARACTER SET utf8 NOT NULL;");
-	$db->query("ALTER TABLE `" . TABLE_PREFIX . "posts` ADD `message_time` varchar(100)  NOT NULL;");
+	$db->query("ALTER TABLE `" . TABLE_PREFIX . "threads` ADD `messager_partner` varchar(400) CHARACTER SET utf8 NOT NULL DEFAULT '0';");
+	$db->query("ALTER TABLE `" . TABLE_PREFIX . "threads` ADD `messager_groupchattitle` varchar(400) CHARACTER SET utf8 NOT NULL DEFAULT '0';");
+	$db->query("ALTER TABLE `" . TABLE_PREFIX . "threads` ADD `messager_grouppic` varchar(400) CHARACTER SET utf8 NOT NULL DEFAULT '0';");
+	$db->query("ALTER TABLE `" . TABLE_PREFIX . "threads` ADD `messager_kind` int(100)  NOT NULL DEFAULT '0';");
+	$db->query("ALTER TABLE `" . TABLE_PREFIX . "posts` ADD `message_date` varchar(400) CHARACTER SET utf8 NOT NULL DEFAULT '0';");
+	$db->query("ALTER TABLE `" . TABLE_PREFIX . "posts` ADD `message_time` varchar(100)  NOT NULL DEFAULT '0';");
 
 	$setting_group = array(
 		'name' => 'messager',
@@ -96,7 +96,7 @@ function messager_install()
 			'value' => 2,
 			'disporder' => 2
 		),
-
+		
 	);
 
 	foreach ($setting_array as $name => $setting) {
@@ -111,23 +111,23 @@ function messager_install()
 
 	// templates
 
-	$insert_array = array(
-		'title' => 'messager_editmessage',
-		'template' => $db->escape_string('<tr>
+    $insert_array = array(
+        'title' => 'messager_editmessage',
+        'template' => $db->escape_string('<tr>
 		<td class="trow1"><strong>{$lang->messager_chatdatetime}</strong></td>
 <td class="trow2">
 	<span class="smalltext"><input type="date" class="textbox" name="message_date" id="message_date" size="40" maxlength="1155" value="{$message_date}" /> </span> 	<span class="smalltext"><input type="time" class="textbox" name="message_time" id="message_time" size="40" maxlength="1155" value="{$message_time}" /> </span>
 </td>
 </tr>'),
-		'sid' => '-1',
-		'version' => '',
-		'dateline' => TIME_NOW
-	);
-	$db->insert_query("templates", $insert_array);
-
-	$insert_array = array(
-		'title' => 'messager_editmessage_firstpost',
-		'template' => $db->escape_string('<tr>
+        'sid' => '-1',
+        'version' => '',
+        'dateline' => TIME_NOW
+    );
+    $db->insert_query("templates", $insert_array);
+	
+    $insert_array = array(
+        'title' => 'messager_editmessage_firstpost',
+        'template' => $db->escape_string('<tr>
 				<td class="trow1"><strong>{$lang->messager_chatkind}</strong></td>
 				<td class="trow2"><select name="messager_kind">
 				{$select_kind}
@@ -202,29 +202,29 @@ function messager_install()
 				})
 			}
 				// --></script>'),
-		'sid' => '-1',
-		'version' => '',
-		'dateline' => TIME_NOW
-	);
-	$db->insert_query("templates", $insert_array);
-
-	$insert_array = array(
-		'title' => 'messager_forumdisplay_icon',
-		'template' => $db->escape_string('<div class="messager_icon" style="top: -10px;">
+        'sid' => '-1',
+        'version' => '',
+        'dateline' => TIME_NOW
+    );
+    $db->insert_query("templates", $insert_array);
+	
+    $insert_array = array(
+        'title' => 'messager_forumdisplay_icon',
+        'template' => $db->escape_string('<div class="messager_icon" style="top: -10px;">
 		<img src="{$icon_user1}">
 	</div>
 	<div class="messager_icon" style="left: -2px;top: 10px;">
 		<img src="{$icon_user2}">
 	</div>'),
-		'sid' => '-1',
-		'version' => '',
-		'dateline' => TIME_NOW
-	);
-	$db->insert_query("templates", $insert_array);
+        'sid' => '-1',
+        'version' => '',
+        'dateline' => TIME_NOW
+    );
+    $db->insert_query("templates", $insert_array);
 
-	$insert_array = array(
-		'title' => 'messager_forumdisplay_thread',
-		'template' => $db->escape_string('<tr class="inline_row">
+    $insert_array = array(
+        'title' => 'messager_forumdisplay_thread',
+        'template' => $db->escape_string('<tr class="inline_row">
 		<td class="{$bgcolor}{$thread_type_class}"><div class="messager_forumdisplay">
 			<div class="messager_forumdisplay_icons">
 				{$messager_icon}
@@ -237,24 +237,15 @@ function messager_install()
 		</td>
 	{$modbit}
 	</tr>'),
-		'sid' => '-1',
-		'version' => '',
-		'dateline' => TIME_NOW
-	);
-	$db->insert_query("templates", $insert_array);
-
-	$insert_array = array(
-		'title' => 'messager_forumdisplay_thread_modbit',
-		'template' => $db->escape_string('<td class="{$bgcolor}{$thread_type_class}" align="center" style="white-space: nowrap"><input type="checkbox" class="checkbox" name="inlinemod_{$multitid}" id="inlinemod_{$multitid}" value="1" {$inlinecheck}  /></td>'),
-		'sid' => '-1',
-		'version' => '',
-		'dateline' => TIME_NOW
-	);
-	$db->insert_query("templates", $insert_array);
-
-	$insert_array = array(
-		'title' => 'messager_forumdisplay_threadlist',
-		'template' => $db->escape_string('<div class="float_left">
+        'sid' => '-1',
+        'version' => '',
+        'dateline' => TIME_NOW
+    );
+    $db->insert_query("templates", $insert_array);
+	
+    $insert_array = array(
+        'title' => 'messager_forumdisplay_threadlist',
+        'template' => $db->escape_string('<div class="float_left">
 		{$multipage}
 	</div>
 	<div class="float_right">
@@ -308,31 +299,31 @@ function messager_install()
 	</div>
 	<br class="clear" />
 	{$inline_edit_js}'),
-		'sid' => '-1',
-		'version' => '',
-		'dateline' => TIME_NOW
-	);
+        'sid' => '-1',
+        'version' => '',
+        'dateline' => TIME_NOW
+    );
+    $db->insert_query("templates", $insert_array);
+	
+    $insert_array = array(
+        'title' => 'messager_globalchats',
+        'template' => $db->escape_string('{$chats} <a href="misc.php?action=messager">{$lang->messager_global}</a>'),
+        'sid' => '-1',
+        'version' => '',
+        'dateline' => TIME_NOW
+    );
+    $db->insert_query("templates", $insert_array);
+    $insert_array = array(
+        'title' => 'messager_messagedate',
+        'template' => $db->escape_string('<div>{$post[\'message_date\']} {$post[\'message_time\']}</div>'),
+        'sid' => '-1',
+        'version' => '',
+        'dateline' => TIME_NOW
+    );
 	$db->insert_query("templates", $insert_array);
-
-	$insert_array = array(
-		'title' => 'messager_globalchats',
-		'template' => $db->escape_string('{$chats} <a href="misc.php?action=messager">{$lang->messager_global}</a>'),
-		'sid' => '-1',
-		'version' => '',
-		'dateline' => TIME_NOW
-	);
-	$db->insert_query("templates", $insert_array);
-	$insert_array = array(
-		'title' => 'messager_messagedate',
-		'template' => $db->escape_string('<div>{$post[\'message_date\']} {$post[\'message_time\']}</div>'),
-		'sid' => '-1',
-		'version' => '',
-		'dateline' => TIME_NOW
-	);
-	$db->insert_query("templates", $insert_array);
-	$insert_array = array(
-		'title' => 'messager_misc',
-		'template' => $db->escape_string('<html>
+    $insert_array = array(
+        'title' => 'messager_misc',
+        'template' => $db->escape_string('<html>
 		<head>
 		<title>{$mybb->settings[\'bbname\']} - {$lang->messager_misc}</title>
 		{$headerinclude}
@@ -353,30 +344,30 @@ function messager_install()
 		{$footer}
 		</body>
 		</html>'),
-		'sid' => '-1',
-		'version' => '',
-		'dateline' => TIME_NOW
-	);
+        'sid' => '-1',
+        'version' => '',
+        'dateline' => TIME_NOW
+    );
 
 	$db->insert_query("templates", $insert_array);
-	$insert_array = array(
-		'title' => 'messager_misc_chats',
-		'template' => $db->escape_string('<div class="messager_chat">
+    $insert_array = array(
+        'title' => 'messager_misc_chats',
+        'template' => $db->escape_string('<div class="messager_chat">
 		<div class="messager_pic"><img src="{$pic}"></div>
 		<div class="messager_lastmessagebox"><div class="messager_messagedate">{$date}</div>
 			<div class="messager_messagename">{$chatname}</div>
 			<div class="messager_lastmessage">{$lastmessage}</div>
 		</div>
 	</div>'),
-		'sid' => '-1',
-		'version' => '',
-		'dateline' => TIME_NOW
-	);
-	$db->insert_query("templates", $insert_array);
-
-	$insert_array = array(
-		'title' => 'messager_newchat_facts',
-		'template' => $db->escape_string('<tr>
+        'sid' => '-1',
+        'version' => '',
+        'dateline' => TIME_NOW
+    );
+    $db->insert_query("templates", $insert_array);
+	
+    $insert_array = array(
+        'title' => 'messager_newchat_facts',
+        'template' => $db->escape_string('<tr>
 		<td class="trow1"><strong>{$lang->messager_chatkind}</strong></td>
 		<td class="trow2"><select name="messager_kind">
 			<option value="1">{$lang->messager_chatkind_single}</option>
@@ -453,14 +444,14 @@ function messager_install()
 		})
 	}
 		// --></script>'),
-		'sid' => '-1',
-		'version' => '',
-		'dateline' => TIME_NOW
-	);
+        'sid' => '-1',
+        'version' => '',
+        'dateline' => TIME_NOW
+    );
 	$db->insert_query("templates", $insert_array);
-	$insert_array = array(
-		'title' => 'messager_postbit_classic',
-		'template' => $db->escape_string('{$ignore_bit}{$deleted_bit}
+    $insert_array = array(
+        'title' => 'messager_postbit_classic',
+        'template' => $db->escape_string('{$ignore_bit}{$deleted_bit}
 		<a name="pid{$post[\'pid\']}" id="pid{$post[\'pid\']}"></a>
 		<div class="messager {$unapproved_shade}" style="{$post_visibility}" id="post_{$post[\'pid\']}">
 			<div class="{$post[\'messager_css\']}">	<div class="post_head">
@@ -480,27 +471,27 @@ function messager_install()
 			</div>
 			</div>
 		</div>'),
-		'sid' => '-1',
-		'version' => '',
-		'dateline' => TIME_NOW
-	);
-	$db->insert_query("templates", $insert_array);
-	$insert_array = array(
-		'title' => 'messager_replaychat',
-		'template' => $db->escape_string('<tr>
+        'sid' => '-1',
+        'version' => '',
+        'dateline' => TIME_NOW
+    );
+    $db->insert_query("templates", $insert_array);
+    $insert_array = array(
+        'title' => 'messager_replaychat',
+        'template' => $db->escape_string('<tr>
 		<td class="trow1"><strong>{$lang->messager_chatdatetime}</strong></td>
 <td class="trow2">
 	<span class="smalltext"><input type="date" class="textbox" name="message_date" id="message_date" size="40" maxlength="1155" value="{$message_date}" /> </span> 	<span class="smalltext"><input type="time" class="textbox" name="message_time" id="message_time" size="40" maxlength="1155" value="{$message_time}" /> </span>
 </td>
 </tr>'),
-		'sid' => '-1',
-		'version' => '',
-		'dateline' => TIME_NOW
-	);
+        'sid' => '-1',
+        'version' => '',
+        'dateline' => TIME_NOW
+    );
 	$db->insert_query("templates", $insert_array);
-	$insert_array = array(
-		'title' => 'messager_showthread',
-		'template' => $db->escape_string('<html>
+    $insert_array = array(
+        'title' => 'messager_showthread',
+        'template' => $db->escape_string('<html>
 		<head>
 		<title>{$thread[\'subject\']}</title>
 		{$headerinclude}
@@ -604,37 +595,37 @@ function messager_install()
 			</script>
 		</body>
 		</html>'),
-		'sid' => '-1',
-		'version' => '',
-		'dateline' => TIME_NOW
-	);
-	$db->insert_query("templates", $insert_array);
-	$insert_array = array(
-		'title' => 'messager_showthread_icons_both',
-		'template' => $db->escape_string('<div class="showthread_icon" style="top: -10px;">
+        'sid' => '-1',
+        'version' => '',
+        'dateline' => TIME_NOW
+    );
+    $db->insert_query("templates", $insert_array);
+    $insert_array = array(
+        'title' => 'messager_showthread_icons_both',
+        'template' => $db->escape_string('<div class="showthread_icon" style="top: -10px;">
 		<img src="{$icon_user1}">
 	</div>
 	<div class="showthread_icon" style="left: -2px;top: 10px;">
 		<img src="{$icon_user2}">
 	</div>'),
-		'sid' => '-1',
-		'version' => '',
-		'dateline' => TIME_NOW
-	);
+        'sid' => '-1',
+        'version' => '',
+        'dateline' => TIME_NOW
+    );
 	$db->insert_query("templates", $insert_array);
-	$insert_array = array(
-		'title' => 'messager_showthread_icons_single',
-		'template' => $db->escape_string('<div class="showthread_icon_single">
+    $insert_array = array(
+        'title' => 'messager_showthread_icons_single',
+        'template' => $db->escape_string('<div class="showthread_icon_single">
 		<img src="{$chat_icon}">
 		</div>'),
-		'sid' => '-1',
-		'version' => '',
-		'dateline' => TIME_NOW
-	);
+        'sid' => '-1',
+        'version' => '',
+        'dateline' => TIME_NOW
+    );
 	$db->insert_query("templates", $insert_array);
-	$insert_array = array(
-		'title' => 'messager_showthread_infos',
-		'template' => $db->escape_string('<div class="showthread_head">
+    $insert_array = array(
+        'title' => 'messager_showthread_infos',
+        'template' => $db->escape_string('<div class="showthread_head">
 		<div class="showthread_icons">
 			{$messager_icons}
 		</div>
@@ -643,25 +634,25 @@ function messager_install()
 			<div class="showthread_infos">{$chat_infos}</div>
 		</div>
 	</div>'),
-		'sid' => '-1',
-		'version' => '',
-		'dateline' => TIME_NOW
-	);
+        'sid' => '-1',
+        'version' => '',
+        'dateline' => TIME_NOW
+    );
 	$db->insert_query("templates", $insert_array);
-	$insert_array = array(
-		'title' => 'messager_threadreview',
-		'template' => $db->escape_string('<div><b>{$lang->messager_threadreview}</b> {$post[\'message_date\']} {$post[\'message_time\']}</div>'),
-		'sid' => '-1',
-		'version' => '',
-		'dateline' => TIME_NOW
-	);
+    $insert_array = array(
+        'title' => 'messager_threadreview',
+        'template' => $db->escape_string('<div><b>{$lang->messager_threadreview}</b> {$post[\'message_date\']} {$post[\'message_time\']}</div>'),
+        'sid' => '-1',
+        'version' => '',
+        'dateline' => TIME_NOW
+    );
 	$db->insert_query("templates", $insert_array);
-	//CSS einfügen
-	$css = array(
-		'name' => 'messager.css',
-		'tid' => 1,
-		'attachedto' => '',
-		"stylesheet" => '.messager_icons{
+	  //CSS einfügen
+	  $css = array(
+        'name' => 'messager.css',
+        'tid' => 1,
+        'attachedto' => '',
+        "stylesheet" => '.messager_icons{
 			display: flex;
 			align-items: center;
 		}
@@ -942,19 +933,19 @@ border-top: 20px solid #ddd;
 	text-transform: uppercase;
 }
 ',
-		'cachefile' => $db->escape_string(str_replace('/', '', 'messager.css')),
-		'lastmodified' => time()
-	);
+        'cachefile' => $db->escape_string(str_replace('/', '', 'messager.css')),
+        'lastmodified' => time()
+    );
 
-	require_once MYBB_ADMIN_DIR . "inc/functions_themes.php";
+    require_once MYBB_ADMIN_DIR . "inc/functions_themes.php";
 
-	$sid = $db->insert_query("themestylesheets", $css);
-	$db->update_query("themestylesheets", array("cachefile" => "css.php?stylesheet=" . $sid), "sid = '" . $sid . "'", 1);
+    $sid = $db->insert_query("themestylesheets", $css);
+    $db->update_query("themestylesheets", array("cachefile" => "css.php?stylesheet=" . $sid), "sid = '" . $sid . "'", 1);
 
-	$tids = $db->simple_select("themes", "tid");
-	while ($theme = $db->fetch_array($tids)) {
-		update_theme_stylesheet_list($theme['tid']);
-	}
+    $tids = $db->simple_select("themes", "tid");
+    while ($theme = $db->fetch_array($tids)) {
+        update_theme_stylesheet_list($theme['tid']);
+    }	
 
 }
 
@@ -1003,12 +994,12 @@ function messager_uninstall()
 
 	$db->delete_query("templates", "title LIKE '%messager%'");
 
-	require_once MYBB_ADMIN_DIR . "inc/functions_themes.php";
-	$db->delete_query("themestylesheets", "name = 'messager.css'");
-	$query = $db->simple_select("themes", "tid");
-	while ($theme = $db->fetch_array($query)) {
-		update_theme_stylesheet_list($theme['tid']);
-	}
+    require_once MYBB_ADMIN_DIR . "inc/functions_themes.php";
+    $db->delete_query("themestylesheets", "name = 'messager.css'");
+    $query = $db->simple_select("themes", "tid");
+    while ($theme = $db->fetch_array($query)) {
+        update_theme_stylesheet_list($theme['tid']);
+    }
 
 
 	// Don't forget this!
@@ -1044,8 +1035,12 @@ function messager_activate()
 	}
 
 	// neue variabeln in die templates einfügen
-	require MYBB_ROOT . "/inc/adminfunctions_templates.php";
-
+	require MYBB_ROOT."/inc/adminfunctions_templates.php";
+	find_replace_templatesets("editpost", "#".preg_quote('{$posticons}')."#i", '{$messager_editmessage}{$posticons}');
+	find_replace_templatesets("newreply", "#".preg_quote('{$posticons}')."#i", '{$messager_replaychat}{$posticons}');
+	find_replace_templatesets("newreply_threadreview_post", "#".preg_quote('{$reviewmessage}')."#i", '{$messager_threadreview}{$reviewmessage}');
+	find_replace_templatesets("newthread", "#".preg_quote('{$posticons}')."#i", '{$messager_newchat_facts}{$posticons}');
+    find_replace_templatesets("header_welcomeblock_member", "#".preg_quote('{$usercplink}')."#i", '{$messager_chats}{$usercplink}');
 }
 
 function messager_deactivate()
@@ -1065,8 +1060,12 @@ function messager_deactivate()
 	}
 
 	// variabeln rausnehmen
-	require MYBB_ROOT . "/inc/adminfunctions_templates.php";
-
+	require MYBB_ROOT."/inc/adminfunctions_templates.php";
+	find_replace_templatesets("editpost", "#".preg_quote('{$messager_editmessage}')."#i", '', 0);
+	find_replace_templatesets("newreply", "#".preg_quote('{$messager_replaychat}')."#i", '', 0);
+	find_replace_templatesets("newreply_threadreview_post", "#".preg_quote('{$messager_threadreview}')."#i", '', 0);
+	find_replace_templatesets("newthread", "#".preg_quote('{$messager_newchat_facts}')."#i", '', 0);
+    find_replace_templatesets("header_welcomeblock_member", "#".preg_quote('{$messager_chats}')."#i", '', 0);
 
 }
 
@@ -1081,9 +1080,9 @@ function messager_newchat()
 	//Zieht sich erstmal die Einstellung
 	$messager_forum = $mybb->settings['messager_forum'];
 
-	$thread['messager_partner'] = $mybb->user['username'] . $mybb->get_input('messager_partner');
+	$thread['messager_partner'] = $mybb->user['username'].$mybb->get_input('messager_partner');
 	$forum['parentlist'] = "," . $forum['parentlist'] . ",";
-	$thread['message_date'] = "2024-01-01";
+	$thread['message_date'] = "2022-01-01";
 	if (preg_match("/,$messager_forum,/i", $forum['parentlist'])) {
 		if ($mybb->input['previewpost'] || $post_errors) {
 			$messager_partner = htmlspecialchars($mybb->get_input('messager_partner'));
@@ -1102,7 +1101,7 @@ function messager_newchat()
 			$messager_kind = $thread['messager_kind'];
 		}
 
-		eval ("\$messager_newchat_facts = \"" . $templates->get("messager_newchat_facts") . "\";");
+		eval("\$messager_newchat_facts = \"" . $templates->get("messager_newchat_facts") . "\";");
 
 	}
 
@@ -1197,7 +1196,7 @@ function messager_replychat()
 	//Die Sprachdatei
 	$lang->load('messager');
 	$messager_forum = $mybb->settings['messager_forum'];
-	$thread['message_date'] = "2024-01-01";
+
 
 	$forum['parentlist'] = "," . $forum['parentlist'] . ",";
 	if (preg_match("/,$messager_forum,/i", $forum['parentlist'])) {
@@ -1210,7 +1209,7 @@ function messager_replychat()
 			$message_time = $thread['message_time'];
 		}
 
-		eval ("\$messager_replaychat = \"" . $templates->get("messager_replaychat") . "\";");
+		eval("\$messager_replaychat = \"" . $templates->get("messager_replaychat") . "\";");
 
 	}
 }
@@ -1219,6 +1218,8 @@ function messager_replychat()
 function messager_replychat_do()
 {
 	global $db, $mybb, $templates, $tid, $forum, $pid, $thread, $subject;
+
+
 	$messager_partner = $thread['messager_partner'];
 	$message_time = $_POST['message_time'];
 	$message_date = $_POST['message_date'];
@@ -1287,7 +1288,7 @@ function messager_editscene()
 
 	$forum['parentlist'] = "," . $forum['parentlist'] . ",";
 	if (preg_match("/,$messager_forum,/i", $forum['parentlist'])) {
-
+		
 		$pid = $mybb->get_input('pid', MyBB::INPUT_INT);
 
 		$post_query = $db->query("SELECT message_date, message_time
@@ -1336,7 +1337,7 @@ function messager_editscene()
 			}
 
 
-			eval ("\$messager_editmessage = \"" . $templates->get("messager_editmessage_firstpost") . "\";");
+			eval("\$messager_editmessage = \"" . $templates->get("messager_editmessage_firstpost") . "\";");
 		} else {
 			// Wenn es sich nur um einen Post handelt
 			if ($mybb->input['previewpost'] || $post_errors) {
@@ -1348,7 +1349,7 @@ function messager_editscene()
 			}
 
 
-			eval ("\$messager_editmessage = \"" . $templates->get("messager_editmessage") . "\";");
+			eval("\$messager_editmessage = \"" . $templates->get("messager_editmessage") . "\";");
 		}
 
 
@@ -1409,125 +1410,125 @@ function messager_editscene_do()
 
 function messager_showthread()
 {
-	global $db, $mybb, $templates, $thread, $fid, $forum, $threads, $lang, $messager_showthread, $pid, $chat_icon, $messager_icons, $chat_title, $chat_infos;
+	global $db, $mybb, $templates, $thread, $fid, $forum, $threads, $lang, $messager_showthread, $pid, $chat_icon, $messager_icons, $chat_title, $chat_infos ;
 	$lang->load('messager');
 
 	$messager_forum = $mybb->settings['messager_forum'];
-	$picfid = "fid" . $mybb->settings['messager_fid'];
+	$picfid = "fid".$mybb->settings['messager_fid'];
 	$messager_archive = 77;
 
 	//einfach mal alles leeren
-	$user1 = "";
+	$user1= "";
 	$icon_user1 = "";
 	$user2 = "";
 	$icon_user2 = "";
 	$uid = 0;
-	$chat_icon = "";
+$chat_icon = ""; 
 
 	$forum['parentlist'] = "," . $forum['parentlist'] . ",";
-	if (preg_match("/,$messager_forum,/i", $forum['parentlist']) or preg_match("/,$messager_archive,/i", $forum['parentlist'])) {
-		$charas = explode(",", $thread['messager_partner']);
-		if ($thread['messager_kind'] == 1) {
-			if (in_array($mybb->user['username'], $charas)) {
-				foreach ($charas as $chara) {
+	if (preg_match("/,$messager_forum,/i", $forum['parentlist']) OR preg_match("/,$messager_archive,/i", $forum['parentlist'])) {
+			$charas = explode(",", $thread['messager_partner']);
+		if($thread['messager_kind'] == 1){	
+			if(in_array($mybb->user['username'], $charas)){
+		foreach($charas as $chara){
 
-					if ($mybb->user['username'] != $chara) {
-						$get_user = get_user_by_username($chara);
-						$uid = $get_user['uid'];
+			if($mybb->user['username'] != $chara){
+				$get_user = get_user_by_username($chara);
+				$uid = $get_user['uid'];
+				
 
-
-						if (!empty($uid)) {
-							$chat_icon = $db->fetch_field($db->simple_select("userfields", "{$picfid}", "ufid = {$uid}"), $picfid);
-						}
-						if (empty($chat_icon)) {
-							$chat_icon = "images/messager/nopic.png";
-						}
-
-						eval ("\$messager_icons  = \"" . $templates->get("messager_showthread_icons_single") . "\";");
-						$charaname = $db->escape_string($chara);
-						$charaname_explode = explode(" ", $charaname);
-						$charaname = $charaname_explode[0];
-						$chat_title = $charaname;
-						$last_seen = max(array($get_user['lastactive'], $get_user['lastvisit']));
-						$chat_infos = "zuletzt online " . my_date('relative', $last_seen);
-
-					}
-				}
-			} else {
-				$charalist = array();
-				foreach ($charas as $charaname) {
-					$charaname = $db->escape_string($charaname);
-					$charaname_explode = explode(" ", $charaname);
-					$charaname = $charaname_explode[0];
-
-					$chara = $charaname;
-
-					array_push($charalist, $chara);
-
+				if(!empty($uid)){
+				$chat_icon = $db->fetch_field($db->simple_select("userfields","{$picfid}","ufid = {$uid}"), $picfid);
+}
+				if(empty($chat_icon)){
+					$chat_icon = "images/messager/nopic.png";
 				}
 
-				//lasst uns die Charas wieder zusammenkleben :D
-				$chat_title = implode(" & ", $charalist);
-
-
-				// Informationen zu Account 1
-				$get_user1 = get_user_by_username($charas[0]);
-				$user1 = $get_user1['uid'];
-
-
-				if (!empty($user1)) {
-					$icon_user1 = $db->fetch_field($db->simple_select("userfields", "{$picfid}", "ufid = {$user1}"), $picfid);
-				}
-				if (empty($icon_user1)) {
-					$icon_user1 = "images/messager/nopic.png";
-				}
-
-				// Informationen zu Account 2
-				$get_user2 = get_user_by_username($charas[1]);
-				$user2 = $get_user2['uid'];
-				if (!empty($user2)) {
-					$icon_user2 = $db->fetch_field($db->simple_select("userfields", "{$picfid}", "ufid = {$user2}"), $picfid);
-				}
-				if (empty($icon_user2)) {
-					$icon_user2 = "images/messager/nopic.png";
-				}
-
-				eval ("\$messager_icons  = \"" . $templates->get("messager_showthread_icons_both") . "\";");
-
-
-
-
-
-			}
-			// Wenn es sich um einen Gruppenchat handelt
-		} elseif ($thread['messager_kind'] == 2) {
-			// alle Charas wieder auseinander nehmen
-
-			$charalist = array();
-			foreach ($charas as $charaname) {
-				$charaname = $db->escape_string($charaname);
+				eval("\$messager_icons  = \"" . $templates->get("messager_showthread_icons_single") . "\";");
+				$charaname = $db->escape_string($chara);
 				$charaname_explode = explode(" ", $charaname);
 				$charaname = $charaname_explode[0];
-
-				$chara = $charaname;
-
-				array_push($charalist, $chara);
+				$chat_title = $charaname;
+				$last_seen = max(array($get_user['lastactive'], $get_user['lastvisit']));
+				$chat_infos  = "zuletzt online ".my_date('relative', $last_seen);
+		
 			}
-
-			//lasst uns die Charas wieder zusammenkleben :D
-			$chat_infos = implode(", ", $charalist);
-
-			$chat_title = $thread['messager_groupchattitle'];
-
-			if (!empty($thread['messager_grouppic'])) {
-				$chat_icon = "{$thread['messager_grouppic']}";
-			} else {
-				$chat_icon = "images/messager/nogrouppic.png";
-			}
-			eval ("\$messager_icons  = \"" . $templates->get("messager_showthread_icons_single") . "\";");
-
 		}
-		eval ("\$messager_showthread  = \"" . $templates->get("messager_showthread_infos") . "\";");
+	} else{
+		$charalist = array();
+		foreach ($charas as $charaname) {
+			$charaname = $db->escape_string($charaname);
+			$charaname_explode = explode(" ", $charaname);
+			$charaname = $charaname_explode[0];
+
+			$chara = $charaname;
+
+			array_push($charalist, $chara);
+		
+		}
+
+		//lasst uns die Charas wieder zusammenkleben :D
+		$chat_title  = implode(" & ", $charalist);
+
+		
+		// Informationen zu Account 1
+		$get_user1 = get_user_by_username($charas[0]);
+		$user1 = $get_user1['uid'];
+		
+
+		if(!empty($user1)){
+		$icon_user1 = $db->fetch_field($db->simple_select("userfields","{$picfid}","ufid = {$user1}"), $picfid);
+		}
+		if(empty($icon_user1)){
+			$icon_user1 = "images/messager/nopic.png";
+		}
+	
+		// Informationen zu Account 2
+		$get_user2 = get_user_by_username($charas[1]);
+		$user2 = $get_user2['uid'];
+		if(!empty($user2)){
+		$icon_user2 = $db->fetch_field($db->simple_select("userfields","{$picfid}","ufid = {$user2}"), $picfid);
+		}
+		if(empty($icon_user2)){
+			$icon_user2 = "images/messager/nopic.png";
+		}
+	
+				eval("\$messager_icons  = \"" . $templates->get("messager_showthread_icons_both") . "\";");
+		
+		
+		
+		
+
+	}
+// Wenn es sich um einen Gruppenchat handelt
+		} elseif($thread['messager_kind'] == 2){
+		// alle Charas wieder auseinander nehmen
+
+		$charalist = array();
+		foreach ($charas as $charaname) {
+			$charaname = $db->escape_string($charaname);
+			$charaname_explode = explode(" ", $charaname);
+			$charaname = $charaname_explode[0];
+
+			$chara = $charaname;
+
+			array_push($charalist, $chara);
+		}
+
+		//lasst uns die Charas wieder zusammenkleben :D
+		$chat_infos = implode(", ", $charalist);
+
+		$chat_title = $thread['messager_groupchattitle'];
+
+		if(!empty($thread['messager_grouppic'])){
+			$chat_icon = "{$thread['messager_grouppic']}";
+		} else{
+			$chat_icon = "images/messager/nogrouppic.png";
+		}
+		eval("\$messager_icons  = \"" . $templates->get("messager_showthread_icons_single") . "\";");
+		
+	}
+	eval("\$messager_showthread  = \"" . $templates->get("messager_showthread_infos") . "\";");
 	}
 }
 
@@ -1545,14 +1546,14 @@ function messager_threadreview()
 	$forum['parentlist'] = "," . $forum['parentlist'] . ",";
 	if (preg_match("/,$messager_forum,/i", $forum['parentlist'])) {
 
-
-
+	
+	
 
 		$post['message_date'] = strtotime($post['message_date']);
 		$post['message_date'] = date("d.m.Y", $post['message_date']);
 
 
-		eval ("\$messager_threadreview = \"" . $templates->get("messager_threadreview") . "\";");
+		eval("\$messager_threadreview = \"" . $templates->get("messager_threadreview") . "\";");
 	}
 
 }
@@ -1564,128 +1565,94 @@ function messager_postbit(&$post)
 	global $db, $mybb, $templates, $pid, $forum, $tid, $forum, $thread, $fid;
 
 	$messager_forum = $mybb->settings['messager_forum'];
-	$picfid = "fid" . $mybb->settings['messager_fid'];
-	$onlineuser = $mybb->user['uid'];
-	$chatmembers = explode(",", $thread['messager_partner']);
+	$picfid = "fid".$mybb->settings['messager_fid'];
+
+
 
 	$forum['parentlist'] = "," . $forum['parentlist'] . ",";
 	if (preg_match("/,$messager_forum,/i", $forum['parentlist'])) {
 
-
+		
 		$post['message_date'] = strtotime($post['message_date']);
 		$post['message_date'] = date("d.m.Y", $post['message_date']);
 
-		if ($thread['messager_kind'] == 2) {
-			if (!empty($post[$picfid])) {
-				$fid = $post[$picfid];
-			} else {
-				$fid = "images/messager/nopic.png";
-			}
+		if($thread['messager_kind'] == 2){
+		if(!empty($post[$picfid])){
+			$fid = $post[$picfid];
+		} else{
+			$fid = "images/messager/nopic.png";
+		}
 			$post['account_pic'] = "<div class='message_account_pic'><img src='{$fid}'></div>";
 
 			$post['profillink'] = "<div class='message_profile'>{$post['profilelink']}</div>";
-		} else {
-			$post['profillink'] = "";
-			if (!empty($post[$picfid])) {
-				$fid = $post[$picfid];
-			} else {
-				$fid = "images/messager/nopic.png";
-			}
-			$post['account_pic'] = "<div class='message_account_pic'><img src='{$fid}'></div>";
-		}
-		eval ("\$post['messager_messagedate'] = \"" . $templates->get("messager_messagedate") . "\";");
-		$post['messager_css'] = "";
-		$post['profilelink'] = "";
+	} else{
 		$post['profillink'] = "";
-		$status = "false";
-		foreach ($chatmembers as $chatmember) {
-			$get_user = get_user_by_username($chatmember, array('fields' => '*'));
-			$get_user = $get_user['uid'];
-
-			if ($onlineuser == $get_user) {
-				
-				$status = "true";
-			}
-		}
-
-		if ($status == "true") {
-			if ($post['username'] == $mybb->user['username']) {
-				$post['messager_css'] = "message_own";
-				$post['profilelink'] = "<a href='member.php?action=profile&uid={$post['uid']}'>{$post['username']}</a>";
-				$post['profillink'] = "<div class='message_profile'></div>";
-			} else {
-				$post['messager_css'] = "message_other";
-				$user = explode(" ", $post['username']);
-				$post['username'] = $user[0];
-				$post['profilelink'] = "<a href='member.php?action=profile&uid={$post['uid']}'>{$post['username']}</a>";
-				$post['profillink'] = "<div class='message_profile'>{$post['profilelink']}</div>";
-			}
-		} else{
-			if ($post['username'] == $thread['username']) {
-				$user = explode(" ", $post['username']);
-				$post['username'] = $user[0];
-				$post['messager_css'] = "message_own";
-				$post['profilelink'] = "<a href='member.php?action=profile&uid={$post['uid']}'>{$post['username']}</a>";
-				$post['profillink'] = "<div class='message_profile'>{$post['profilelink']}</div>";
-			} else {
-				$post['messager_css'] = "message_other";
-				$user = explode(" ", $post['username']);
-				$post['username'] = $user[0];
-				$post['profilelink'] = "<a href='member.php?action=profile&uid={$post['uid']}'>{$post['username']}</a>";
-				$post['profillink'] = "<div class='message_profile'>{$post['profilelink']}</div>";
-			}
-
-		}
-
+		$post['account_pic'] = "";
 	}
+		eval("\$post['messager_messagedate'] = \"" . $templates->get("messager_messagedate") . "\";");
+
+		$post['messager_css'] = "";
+	
+		if($post['username'] == $mybb->user['username']){
+			$post['messager_css'] = "message_own";
+			$post['profillink'] = "";
+			$post['account_pic'] = "";
+		} else{
+			$post['messager_css'] = "message_other";
+			$user = explode(" ", $post['username']);
+			$post['username'] = $user[0];
+			$post['profilelink'] = "<a href='member.php?action=profile&uid={$post['uid']}'>{$post['username']}</a>";
+			$post['profillink'] = "<div class='message_profile'>{$post['profilelink']}</div>";
+		}
+ 
+	} 
 
 }
 
 
 //forumdisplay anzeige :D das auch alle Chats hübsch angezeigt werden
 
-function messager_threads(&$thread)
-{
+function messager_threads(&$thread){
 	global $db, $mybb, $templates, $lang, $thread, $icon_user1, $icon_user2, $messager_icon, $message_partner;
 	$lang->load('messager');
 
 	$field = $mybb->settings['messager_fid'];
 	$messager_icon = "";
-	$all_charas = explode(",", $thread['messager_partner']);
+		$all_charas = explode(",", $thread['messager_partner']);
 	// Wenn es sich um einen Einzelchat handelt
-	if ($thread['messager_kind'] == 1) {
+	if($thread['messager_kind'] == 1){
 
-		// Informationen zu Account 1
-		$get_user1 = get_user_by_username($all_charas[0]);
-		$user1 = $get_user1['uid'];
-		if ($user1 != 0) {
-			$icon_user1 = $db->fetch_field($db->simple_select("userfields", "fid" . $field, "ufid = {$user1}"), "fid" . $field);
-		}
-		if (empty($icon_user1)) {
-			$icon_user1 = "images/messager/nopic.png";
-		}
-
-		// Informationen zu Account 2
-		$get_user2 = get_user_by_username($all_charas[1]);
-		$user2 = $get_user2['uid'];
-		if ($user2 != 0) {
-			$icon_user2 = $db->fetch_field($db->simple_select("userfields", "fid" . $field, "ufid = {$user2}"), "fid" . $field);
-		}
-		if (empty($icon_user2)) {
-			$icon_user2 = "images/messager/nopic.png";
-		}
-
-
-
-		eval ("\$messager_icon = \"" . $templates->get("messager_forumdisplay_icon") . "\";");
-	} else {
-
-		if (!empty($thread['messager_grouppic'])) {
-			$messager_icon = "<div class='messager_groupicon'><img src='{$thread['messager_grouppic']}'></div>";
-		} else {
-			$messager_icon = "<div class='messager_groupicon'><img src='images/messager/nogrouppic.png'></div>";
-		}
+	// Informationen zu Account 1
+	$get_user1 = get_user_by_username($all_charas[0]);
+	$user1 = $get_user1['uid'];
+	if($user1 != 0){
+	$icon_user1 = $db->fetch_field($db->simple_select("userfields","fid".$field,"ufid = {$user1}"), "fid".$field);
+}
+	if(empty($icon_user1)){
+		$icon_user1 = "images/messager/nopic.png";
 	}
+
+	// Informationen zu Account 2
+	$get_user2 = get_user_by_username($all_charas[1]);
+	$user2 = $get_user2['uid'];
+	if($user2 != 0){
+	$icon_user2 = $db->fetch_field($db->simple_select("userfields","fid".$field,"ufid = {$user2}"), "fid".$field);
+	}
+	if(empty($icon_user2)){
+		$icon_user2 = "images/messager/nopic.png";
+	}
+
+	
+
+	eval("\$messager_icon = \"" . $templates->get("messager_forumdisplay_icon") . "\";");
+} else{
+
+	if(!empty($thread['messager_grouppic'])){
+		$messager_icon = "<div class='messager_groupicon'><img src='{$thread['messager_grouppic']}'></div>";
+	} else{
+		$messager_icon = "<div class='messager_groupicon'><img src='images/messager/nogrouppic.png'></div>";
+	}
+}
 
 	$message_partner = implode(" & ", $all_charas);
 }
@@ -1718,7 +1685,7 @@ function messager_globalchats()
 		// Zähle, wie viele Chats vorhanden sind
 		$chats++;
 	}
-	eval ("\$messager_chats = \"" . $templates->get("messager_globalchats") . "\";");
+	eval("\$messager_chats = \"" . $templates->get("messager_globalchats") . "\";");
 
 }
 
@@ -1734,7 +1701,7 @@ function messager_chats()
 
 		$messager_forum = $mybb->settings['messager_forum'];
 		$character = $db->escape_string($mybb->user['username']);
-		$picfid = "fid" . $mybb->settings['messager_fid'];
+		$picfid = "fid".$mybb->settings['messager_fid'];
 
 
 		$select_chats = $db->query("SELECT *, t.lastposter, t.lastpost, t.messager_kind, t.messager_partner, t.subject, t.messager_groupchattitle, t.lastposteruid, p.pid
@@ -1769,77 +1736,63 @@ function messager_chats()
 						$charaquery = $db->simple_select("userfields", "*", "ufid ='$uid'");
 						$charafid = $db->fetch_array($charaquery);
 
-						if (!empty($charafid[$picfid])) {
-							$pic = $charafid[$picfid];
-						} else {
-							$pic = "images/messager/nopic.png";
-						}
+						if(!empty($charafid[$picfid])){
+						$pic = $charafid[$picfid];
+					} else{
+						$pic = "images/messager/nopic.png";
+					}
 
-						$chara = explode(" ", $chara);
-						$chara = $chara[0];
+					$chara = explode(" ", $chara);
+					$chara = $chara[0];
 
 						$chatname = "<a href='showthread.php?tid={$tid}&action=lastpost'>{$chara}</a>";
 					}
 
-					$messagequery = $db->simple_select(
-						"posts",
-						"*",
-						"tid='{$tid}'",
-						array(
-							"order_by" => 'pid',
-							"order_dir" => 'DESC',
-							"limit" => 1
-						)
-					);
+					$messagequery = $db->simple_select("posts", "*",
+					"tid='{$tid}'", array("order_by" => 'pid',
+					"order_dir" => 'DESC', "limit" => 1));
 
 					$last_message = $db->fetch_array($messagequery);
 
-					if ($last_message['username'] == $mybb->user['username']) {
+					if($last_message['username'] == $mybb->user['username']){
 						$check = "<i class='fa-solid fa-check-double'></i> ";
 					}
 
-					$lastmessage = $check . my_substr($last_message['message'], 0, 100) . "...";
+					$lastmessage = $check.my_substr($last_message['message'], 0, 100) . "...";
 				}
 			} else {
 				$chatname = "<a href='showthread.php?tid={$tid}&action=lastpost'>{$message['messager_groupchattitle']}</a>";
-				if (!empty($message['messager_grouppic'])) {
-					$pic = $message['messager_grouppic'];
-				} else {
-					$pic = "images/messager/nogrouppic.png";
-				}
+				if(!empty($message['messager_grouppic'])){
+						$pic = $message['messager_grouppic'];
+					} else{
+						$pic = "images/messager/nogrouppic.png";
+					}
 
+					
+					$messagequery = $db->simple_select("posts", "*",
+					"tid='{$tid}'", array("order_by" => 'pid',
+					"order_dir" => 'DESC', "limit" => 1));
 
-				$messagequery = $db->simple_select(
-					"posts",
-					"*",
-					"tid='{$tid}'",
-					array(
-						"order_by" => 'pid',
-						"order_dir" => 'DESC',
-						"limit" => 1
-					)
-				);
+					$last_message = $db->fetch_array($messagequery);
 
-				$last_message = $db->fetch_array($messagequery);
-
-
-				$chara = explode(" ", $last_message['username']);
-				$chara = $chara[0];
-				$lastmessage = "{$chara}: " . my_substr($last_message['message'], 0, 100) . "...";
+				
+					$chara = explode(" ", $last_message['username']);
+					$chara = $chara[0];
+					$lastmessage = "{$chara}: ".my_substr($last_message['message'], 0, 100) . "...";
 			}
 
 
 			$date = strtotime($message['message_date']);
-			$date = date("d.m.Y", $date) . ", " . $message['message_time'];
+			$date = date("d.m.Y", $date).", ".$message['message_time'];
 
 
-			eval ("\$your_chats.= \"" . $templates->get("messager_misc_chats") . "\";");
+			eval("\$your_chats.= \"" . $templates->get("messager_misc_chats") . "\";");
 		}
 
 
 
 
-		eval ("\$page = \"" . $templates->get("messager_misc") . "\";");
+		eval("\$page = \"" . $templates->get("messager_misc") . "\";");
 		output_page($page);
 	}
 }
